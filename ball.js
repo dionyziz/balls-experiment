@@ -1,7 +1,7 @@
 var EPSILON_DISTANCE = 1;
 var uid = 0;
 
-var Ball = function( r, u, a ) {
+var Ball = function( r, u, a, color ) {
     this.r = r;
     if ( typeof u == 'undefined' ) {
         u = new Vector( 0, 0 );
@@ -13,7 +13,10 @@ var Ball = function( r, u, a ) {
     this.u = u;
     this.a = a;
 
-    this.color = 'black'; // rgbRandom();
+    if ( typeof color == 'undefined' ) {
+        color = rgbRandom();
+    }
+    this.color = color;
     this.uid = uid++;
 };
 
@@ -47,9 +50,10 @@ Ball.prototype = {
         var self = this;
 
         // Euler integration
+        var newr = this.r.add( this.u.scale( dt ) );
         var newu = this.u.add( this.a.scale( dt ) ); 
         // check if adjusted speed causes a collision
-        var newrnewu = self.r.add( newu.scale( dt ) );
+        var newrnewu = newr.add( newu.scale( dt ) );
         var causesCollision = false;
         balls.forEach( function( ball ) {
             if ( self.collideWithBall( ball, newrnewu ) ) {
@@ -61,7 +65,6 @@ Ball.prototype = {
             // (Euler integration is insufficient for this condition, so handle it as a singularity)
             newu = this.u;
         }
-        var newr = this.r.add( this.u.scale( dt ) );
 
         // collision
         // collisions with other balls, O( N^2 ) collision integration
@@ -119,7 +122,7 @@ Ball.prototype = {
     },
     clone: function() {
         return new Ball(
-            this.r.clone(), this.u.clone(), this.a.clone()
+            this.r.clone(), this.u.clone(), this.a.clone(), this.color
         );
     }
 };
