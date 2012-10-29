@@ -8,15 +8,18 @@ canvas.onmousedown = function( e ) {
             GRAVITY
         );
     }
+    return false;
 };
 document.onmousemove = function( e ) {
     if ( e.which == 1 && pendingBall !== false ) {
         pendingBall.u = ( new Vector( e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop ) ).subtract( pendingBall.r );
     }
+    return false;
 }
 document.onmouseup = function( e ) {
     if ( e.which == 1 ) {
         balls.push( pendingBall.clone() );
         pendingBall = false;
     }
+    return false;
 };
