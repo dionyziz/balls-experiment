@@ -34,6 +34,7 @@ Ball.prototype = {
         if ( ball.uid != this.uid ) {
             // circle/circle collision detection
             if ( ball.r.distance( newr ) < 2 * BALL_RADIUS ) {
+                // collision determination
                 pointOfCollision = ball.r.add( newr ).scale( 1 / 2 );
                 return pointOfCollision;
             }
@@ -52,6 +53,8 @@ Ball.prototype = {
         // Euler integration
         var newr = this.r.add( this.u.scale( dt ) );
         var newu = this.u.add( this.a.scale( dt ) ); 
+
+        /*
         // check if adjusted speed causes a collision
         var newrnewu = newr.add( newu.scale( dt ) );
         var causesCollision = false;
@@ -65,6 +68,7 @@ Ball.prototype = {
             // (Euler integration is insufficient for this condition, so handle it as a singularity)
             newu = this.u;
         }
+        */
 
         // collision
         // collisions with other balls, O( N^2 ) collision integration
@@ -73,16 +77,37 @@ Ball.prototype = {
         balls.forEach( function( ball ) {
             var pointOfCollision = self.collideWithBall( ball, newr );
             if ( pointOfCollision !== false ) {
+                // collision resolution
                 var selfToCollision = pointOfCollision.subtract( newr ).normalize();
                 var ballToCollision = pointOfCollision.subtract( ball.r ).normalize();
                 var c1 = selfToCollision.dot( self.u ),
                     c2 = ballToCollision.dot( ball.u );
                 var c = Math.abs( DAMPING * ( c1 + c2 ) / 2 );
                 
-                // ignore euler-integrated newu if collision has occured
-                newu = self.u.subtract( selfToCollision.scale( c1 + c ) );
+                // bounce
+                newu = newu.subtract( selfToCollision.scale( c1 + c ) );
                 ball.u = ball.u.subtract( ballToCollision.scale( c2 + c ) );
-                newr = ball.r.add( newr.subtract( ball.r ).normalize().scale( 2 * BALL_RADIUS + EPSILON_DISTANCE ) );
+                var low = self.r;
+                var high = newr;
+
+                /*
+                do {
+                    var mid = low.add( high ).scale( 1 / 2 );
+                    var dist = mid.subtract( ball.r ).length();
+                    
+                    if ( Math.abs( dist - 2 * BALL_RADIUS ) < EPSILON_DISTANCE ) {
+                        break;
+                    }
+                    if ( dist < 2 * BALL_RADIUS ) {
+                        high = mid;
+                    }
+                    else {
+                        low = mid;
+                    }
+                } while ( true );
+                */
+                newr = ball.r.add( newr.subtract( ball.r ).normalize().scale( 2 * BALL_RADIUS ) );
+                // newr = high;
             }
         } );
         // bottom wall
@@ -92,6 +117,7 @@ Ball.prototype = {
                 newr.y = H - BALL_RADIUS;
             }
             newu.y = -this.u.y * DAMPING;
+            newu.x = this.u.x * FRICTION;
         }
         // top wall
         if ( newr.y - BALL_RADIUS < 0 ) {
@@ -100,6 +126,7 @@ Ball.prototype = {
                 newr.y = BALL_RADIUS;
             }
             newu.y = -this.u.y * DAMPING;
+            newu.x = this.u.x * FRICTION;
         }
         // left wall
         if ( newr.x - BALL_RADIUS < 0 ) {
@@ -108,6 +135,7 @@ Ball.prototype = {
                 newr.x = BALL_RADIUS;
             }
             newu.x = -this.u.x * DAMPING;
+            newu.y = this.u.y * FRICTION;
         }
         // right wall
         if ( newr.x + BALL_RADIUS > W ) {
@@ -116,6 +144,7 @@ Ball.prototype = {
                 newr.x = H - BALL_RADIUS;
             }
             newu.x = -this.u.x * DAMPING;
+            newu.y = this.u.y * FRICTION;
         }
         this.r = newr;
         this.u = newu;

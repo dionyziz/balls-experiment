@@ -18,17 +18,35 @@
                 display: block;
                 margin: auto;
             }
+            a img {
+                border: 0;
+            }
+            div.by {
+                text-align: right;
+                position: fixed;
+                bottom: 0;
+                right: 0;
+                padding: 5px;
+            }
+            div.by img {
+                vertical-align: text-bottom;
+                border-radius: 3px;
+            }
         </style>
     </head>
     <body>
         <canvas id='canvas' width='600' height='600'></canvas>
         <p><strong>Click and drag</strong> to release a ball.</p>
         <script src='behavior.js'></script>
-        <script src='object.js'></script>
         <script src='vector.js'></script>
         <script src='color.js'></script>
         <script src='ball.js'></script>
         <script src='simulation.js'></script>
         <script src='render.js'></script>
+        <div class='by'>
+            a <strong>physics experiment</strong> by
+            <a href='http://github.com/gtklocker'><img src='gtklocker.png' alt='gtklocker' title='gtklocker' width='22' /></a>
+            <a href='http://github.com/dionyziz'><img src='dionyziz.png' alt='dionyziz' title='dionyziz' width='22' /></a>
+        </div>
     </body>
 </html>
