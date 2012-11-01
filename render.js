@@ -3,7 +3,15 @@ var ARROW_HEAD_ANGLE = Math.PI / 4;
 var canvas = document.querySelector( 'canvas' );
 var ctx = canvas.getContext( '2d' );
 
-window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+if ( window.webkitRequestAnimationFrame ) {
+    window.requestAnimationFrame = window.webkitRequestAnimationFrame;
+}
+else if ( window.mozRequestAnimationFrame ) {
+    window.requestAnimationFrame = window.mozRequestAnimationFrame;
+}
+else {
+    alert( 'Request animation frame not available' );
+}
 
 var t = Date.now();
 ( function animate() {
