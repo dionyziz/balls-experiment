@@ -42,6 +42,7 @@ Ball.prototype = {
         return false;
     },
     collideWithWall: function( newr ) {
+        // collision detection only
         return newr.y + BALL_RADIUS > H
             || newr.y - BALL_RADIUS < 0
             || newr.x - BALL_RADIUS < 0
@@ -53,22 +54,6 @@ Ball.prototype = {
         // Euler integration
         var newr = this.r.add( this.u.scale( dt ) );
         var newu = this.u.add( this.a.scale( dt ) ); 
-
-        /*
-        // check if adjusted speed causes a collision
-        var newrnewu = newr.add( newu.scale( dt ) );
-        var causesCollision = false;
-        balls.forEach( function( ball ) {
-            if ( self.collideWithBall( ball, newrnewu ) ) {
-                causesCollision = true;
-            }
-        } );
-        if ( causesCollision || this.collideWithWall( newrnewu ) ) {
-            // do not adjust speed -- we don't have enough distance of motion to gain appropriate energy
-            // (Euler integration is insufficient for this condition, so handle it as a singularity)
-            newu = this.u;
-        }
-        */
 
         // collision
         // collisions with other balls, O( N^2 ) collision integration
@@ -90,26 +75,11 @@ Ball.prototype = {
                 var low = self.r;
                 var high = newr;
 
-                /*
-                do {
-                    var mid = low.add( high ).scale( 1 / 2 );
-                    var dist = mid.subtract( ball.r ).length();
-                    
-                    if ( Math.abs( dist - 2 * BALL_RADIUS ) < EPSILON_DISTANCE ) {
-                        break;
-                    }
-                    if ( dist < 2 * BALL_RADIUS ) {
-                        high = mid;
-                    }
-                    else {
-                        low = mid;
-                    }
-                } while ( true );
-                */
                 newr = ball.r.add( newr.subtract( ball.r ).normalize().scale( 2 * BALL_RADIUS ) );
                 // newr = high;
             }
         } );
+        // collision detection + response for walls
         // bottom wall
         if ( newr.y + BALL_RADIUS > H ) {
             if ( newr.y > H - BALL_RADIUS ) {
