@@ -2,51 +2,22 @@
 <html>
     <head>
         <title>Ball simulation</title>
-        <style>
-            body {
-                background-color: #fff;
-                font-family: Calibri, sans-serif;
-            }
-            p {
-                display: block;
-                text-align: center;
-            }
-            canvas {
-                border: 1px solid #000;
-                cursor: pointer;
-
-                display: block;
-                margin: auto;
-            }
-            a img {
-                border: 0;
-            }
-            div.by {
-                text-align: right;
-                position: fixed;
-                bottom: 0;
-                right: 0;
-                padding: 5px;
-            }
-            div.by img {
-                vertical-align: text-bottom;
-                border-radius: 3px;
-            }
-        </style>
+        <link rel='stylesheet' href='style.css' />
     </head>
     <body>
         <canvas id='canvas' width='600' height='600'></canvas>
+        <img src='images/rotate.png' alt='O' class='rotor' />
         <p><strong>Click and drag</strong> to release a ball.</p>
-        <script src='behavior.js'></script>
-        <script src='vector.js'></script>
-        <script src='color.js'></script>
-        <script src='ball.js'></script>
-        <script src='simulation.js'></script>
-        <script src='render.js'></script>
+        <script src='js/vector.js'></script>
+        <script src='js/behavior.js'></script>
+        <script src='js/color.js'></script>
+        <script src='js/ball.js'></script>
+        <script src='js/simulation.js'></script>
+        <script src='js/render.js'></script>
         <div class='by'>
             a <strong>physics experiment</strong> by
-            <a href='http://github.com/gtklocker'><img src='gtklocker.png' alt='gtklocker' title='gtklocker' width='22' /></a>
-            <a href='http://github.com/dionyziz'><img src='dionyziz.png' alt='dionyziz' title='dionyziz' width='22' /></a>
+            <a href='http://github.com/gtklocker'><img src='images/gtklocker.png' alt='gtklocker' title='gtklocker' width='22' /></a>
+            <a href='http://github.com/dionyziz'><img src='images/dionyziz.png' alt='dionyziz' title='dionyziz' width='22' /></a>
         </div>
     </body>
 </html>
