@@ -1,0 +1,36 @@
+body {
+    background-color: #fff;
+    font-family: Calibri, sans-serif;
+}
+p {
+    display: block;
+    text-align: center;
+}
+canvas {
+    background-color: white;
+
+    border: 1px solid #000;
+    cursor: pointer;
+
+    display: block;
+    margin: auto;
+}
+a img {
+    border: 0;
+}
+div.by {
+    text-align: right;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    padding: 5px;
+}
+div.by img {
+    vertical-align: text-bottom;
+    border-radius: 3px;
+}
+.rotor {
+    position: absolute;
+    padding: 5px;
+    cursor: move;
+}
